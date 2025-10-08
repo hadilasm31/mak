@@ -1615,11 +1615,11 @@
         /* ============================================= */
 
         .export-section {
-            background: #8550cf;
-            padding: 1rem;
-            border-radius: 2px;
-            margin: 1rem 0;
-            border-left: 2px solid var(--chef-color);
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--chef-color);
         }
 
         .export-buttons {
@@ -1633,8 +1633,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0rem;
-            background: rgb(48, 241, 4);
+            padding: 1.5rem;
+            background: white;
             border: 2px solid var(--border);
             border-radius: 8px;
             cursor: pointer;
@@ -1643,14 +1643,14 @@
         }
 
         .export-btn:hover {
-            transform: translateY(-6px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-lg);
             border-color: var(--chef-color);
         }
 
         .export-icon {
             font-size: 2rem;
-            margin-bottom: 0.1rem;
+            margin-bottom: 0.5rem;
         }
 
         .export-title {
@@ -1707,7 +1707,7 @@
 
         .export-table th {
             background: var(--chef-color);
-            color: rgb(250, 248, 248);
+            color: white;
             padding: 0.8rem;
             text-align: left;
             font-weight: 600;
@@ -2444,6 +2444,13 @@
                         <button class="btn" onclick="showSection('adminCreateUser')">➕ Créer utilisateur</button>
                     </div>
 
+                    <!-- Barre de recherche -->
+                    <div class="search-box">
+                        <input type="text" id="searchUser" class="search-input" placeholder="Rechercher par nom, prénom, identifiant..." onkeyup="searchUsers()">
+                        <button class="btn btn-small" onclick="searchUsers()">🔍 Rechercher</button>
+                        <button class="btn btn-small btn-outline" onclick="clearUserSearch()">❌ Effacer</button>
+                    </div>
+
                     <!-- Filtres -->
                     <div class="filters">
                         <div class="filter-group">
@@ -2459,6 +2466,13 @@
                                 <option value="">Tous les rôles</option>
                                 <option value="CHEF">CHEF</option>
                                 <option value="EMPLOYE">EMPLOYE</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterActivity">Filtrer par activité:</label>
+                            <select id="filterActivity" onchange="filterUsersTable()">
+                                <option value="">Toutes les activités</option>
+                                <!-- Options will be populated by JavaScript -->
                             </select>
                         </div>
                     </div>
@@ -2497,7 +2511,7 @@
                         <button class="btn btn-small btn-outline" onclick="clearPointagesSelection()" style="margin-left: auto;">❌ Effacer</button>
                     </div>
 
-                    <!-- Recherche avancée -->
+                    <!-- Barre de recherche -->
                     <div class="search-box">
                         <input type="text" id="searchPointage" class="search-input" placeholder="Rechercher par nom d'employé, chef, activité..." onkeyup="searchPointages()">
                         <button class="btn btn-small" onclick="searchPointages()">🔍 Rechercher</button>
@@ -2878,6 +2892,28 @@
                         </div>
                     </div>
 
+                    <!-- Barre de recherche pour les chefs -->
+                    <div class="search-box">
+                        <input type="text" id="searchChefPointage" class="search-input" placeholder="Rechercher par nom d'employé, activité, date..." onkeyup="searchChefPointages()">
+                        <button class="btn btn-small" onclick="searchChefPointages()">🔍 Rechercher</button>
+                        <button class="btn btn-small btn-outline" onclick="clearChefPointageSearch()">❌ Effacer</button>
+                    </div>
+
+                    <!-- Filtres pour les chefs -->
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="filterChefPointageDate">Filtrer par date:</label>
+                            <input type="date" id="filterChefPointageDate" onchange="filterChefPointages()">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterChefPointageActivity">Filtrer par activité:</label>
+                            <select id="filterChefPointageActivity" onchange="filterChefPointages()">
+                                <option value="">Toutes les activités</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- NOUVELLE SECTION D'EXPORT -->
                     <div class="export-section">
                         <h4>📤 Export des Pointages du Jour</h4>
@@ -2887,19 +2923,19 @@
                             <div class="export-btn" onclick="exportPointagesPDF()">
                                 <div class="export-icon">📄</div>
                                 <div class="export-title">PDF</div>
-                                <div class="export-description"></div>
+                                <div class="export-description">Export professionnel avec mise en page</div>
                             </div>
                             
                             <div class="export-btn" onclick="exportPointagesExcel()">
                                 <div class="export-icon">📊</div>
                                 <div class="export-title">Excel</div>
-                                <div class="export-description"></div>
+                                <div class="export-description">Fichier structuré pour analyses</div>
                             </div>
                             
                             <div class="export-btn" onclick="exportPointagesPNG()">
                                 <div class="export-icon">🖼️</div>
                                 <div class="export-title">Image PNG</div>
-                                <div class="export-description"></div>
+                                <div class="export-description">Capture d'écran haute qualité</div>
                             </div>
                         </div>
 
@@ -2934,6 +2970,28 @@
                 <div class="card">
                     <h3>Mes pointages</h3>
                     
+                    <!-- Barre de recherche pour les employés -->
+                    <div class="search-box">
+                        <input type="text" id="searchEmployeePointage" class="search-input" placeholder="Rechercher par activité, date..." onkeyup="searchEmployeePointages()">
+                        <button class="btn btn-small" onclick="searchEmployeePointages()">🔍 Rechercher</button>
+                        <button class="btn btn-small btn-outline" onclick="clearEmployeePointageSearch()">❌ Effacer</button>
+                    </div>
+
+                    <!-- Filtres pour les employés -->
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="filterEmployeePointageDate">Filtrer par date:</label>
+                            <input type="date" id="filterEmployeePointageDate" onchange="filterEmployeePointages()">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterEmployeePointageActivity">Filtrer par activité:</label>
+                            <select id="filterEmployeePointageActivity" onchange="filterEmployeePointages()">
+                                <option value="">Toutes les activités</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                    
                     <!-- Pointages groupés par semaine -->
                     <div id="employeeWeeklyPointagesContainer">
                         <!-- Contenu généré dynamiquement -->
@@ -2945,6 +3003,31 @@
             <section id="employeeBulletins" class="section">
                 <div class="card">
                     <h3>Mes bulletins de paie</h3>
+                    
+                    <!-- Barre de recherche pour les bulletins employés -->
+                    <div class="search-box">
+                        <input type="text" id="searchEmployeeBulletin" class="search-input" placeholder="Rechercher par période, statut..." onkeyup="searchEmployeeBulletins()">
+                        <button class="btn btn-small" onclick="searchEmployeeBulletins()">🔍 Rechercher</button>
+                        <button class="btn btn-small btn-outline" onclick="clearEmployeeBulletinSearch()">❌ Effacer</button>
+                    </div>
+
+                    <!-- Filtres pour les bulletins employés -->
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="filterEmployeeBulletinMois">Filtrer par mois:</label>
+                            <select id="filterEmployeeBulletinMois" onchange="filterEmployeeBulletins()">
+                                <option value="">Tous les mois</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterEmployeeBulletinAnnee">Filtrer par année:</label>
+                            <select id="filterEmployeeBulletinAnnee" onchange="filterEmployeeBulletins()">
+                                <option value="">Toutes les années</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
                     
                     <!-- Bulletins de paie -->
                     <div id="employeeBulletinsContainer">
@@ -2972,7 +3055,7 @@
                         <button class="btn btn-small btn-outline" onclick="clearBulletinsSelection()" style="margin-left: auto;">❌ Effacer</button>
                     </div>
 
-                    <!-- Recherche avancée -->
+                    <!-- Barre de recherche -->
                     <div class="search-box">
                         <input type="text" id="searchBulletin" class="search-input" placeholder="Rechercher par nom d'employé, période..." onkeyup="searchBulletins()">
                         <button class="btn btn-small" onclick="searchBulletins()">🔍 Rechercher</button>
@@ -3064,6 +3147,13 @@
                     <h3>📦 Archives</h3>
                     <p>Gestion des archives des bulletins de paie et fiches de pointage</p>
                     
+                    <!-- Barre de recherche archives -->
+                    <div class="search-box">
+                        <input type="text" id="searchArchive" class="search-input" placeholder="Rechercher dans les archives..." onkeyup="searchArchives()">
+                        <button class="btn btn-small" onclick="searchArchives()">🔍 Rechercher</button>
+                        <button class="btn btn-small btn-outline" onclick="clearArchiveSearch()">❌ Effacer</button>
+                    </div>
+
                     <div class="archive-actions">
                         <button class="btn" onclick="showArchives('bulletins')">📋 Archives des Bulletins</button>
                         <button class="btn" onclick="showArchives('pointages')">📊 Archives des Pointages</button>
@@ -3164,6 +3254,8 @@
         // Variables pour les filtres et recherche
         let currentPointages = [];
         let currentBulletins = [];
+        let currentUsers = [];
+        let currentArchives = [];
 
         // =============================================
         // FONCTIONS SUPABASE CORRIGÉES
@@ -3492,6 +3584,168 @@
                 console.error('Erreur critique lors de l\'enregistrement des présences:', error);
                 throw error;
             }
+        }
+
+        // =============================================
+        // FONCTIONS DE RECHERCHE ET FILTRES
+        // =============================================
+
+        // Recherche dans les utilisateurs
+        function searchUsers() {
+            const searchTerm = document.getElementById('searchUser').value.toLowerCase();
+            const departementFilter = document.getElementById('filterDepartement').value;
+            const roleFilter = document.getElementById('filterRole').value;
+            const activityFilter = document.getElementById('filterActivity').value;
+            
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                const userData = [
+                    cells[2].textContent, // username
+                    cells[3].textContent, // nom
+                    cells[4].textContent, // prenom
+                    cells[5].textContent, // role
+                    cells[6].textContent, // activity
+                    cells[7].textContent  // departement
+                ].join(' ').toLowerCase();
+                
+                const userDepartement = cells[7].textContent;
+                const userRole = cells[5].textContent;
+                const userActivity = cells[6].textContent;
+                
+                const searchMatch = !searchTerm || userData.includes(searchTerm);
+                const departementMatch = !departementFilter || userDepartement === departementFilter;
+                const roleMatch = !roleFilter || userRole === roleFilter;
+                const activityMatch = !activityFilter || userActivity === activityFilter;
+                
+                const shouldShow = searchMatch && departementMatch && roleMatch && activityMatch;
+                row.style.display = shouldShow ? '' : 'none';
+                
+                if (shouldShow) visibleCount++;
+            });
+            
+            // Afficher un message si aucun résultat
+            const tableBody = document.getElementById('usersTableBody');
+            if (visibleCount === 0) {
+                if (!document.getElementById('noUsersMessage')) {
+                    const messageRow = document.createElement('tr');
+                    messageRow.id = 'noUsersMessage';
+                    messageRow.innerHTML = `
+                        <td colspan="10" style="text-align: center; padding: 2rem;">
+                            <div class="empty-state-icon">👥</div>
+                            <h3>Aucun utilisateur trouvé</h3>
+                            <p>Aucun utilisateur ne correspond à vos critères de recherche</p>
+                        </td>
+                    `;
+                    tableBody.appendChild(messageRow);
+                }
+            } else {
+                const messageRow = document.getElementById('noUsersMessage');
+                if (messageRow) {
+                    messageRow.remove();
+                }
+            }
+        }
+
+        function clearUserSearch() {
+            document.getElementById('searchUser').value = '';
+            document.getElementById('filterDepartement').value = '';
+            document.getElementById('filterRole').value = '';
+            document.getElementById('filterActivity').value = '';
+            searchUsers();
+        }
+
+        // Recherche dans les pointages admin
+        function searchPointages() {
+            filterPointagesTable();
+        }
+
+        function clearPointageSearch() {
+            document.getElementById('searchPointage').value = '';
+            document.getElementById('filterPointageActivity').value = '';
+            document.getElementById('filterPointageDate').value = '';
+            document.getElementById('filterPointageChef').value = '';
+            document.getElementById('filterPointageArchived').value = 'non-archived';
+            filterPointagesTable();
+        }
+
+        // Recherche dans les pointages chef
+        function searchChefPointages() {
+            filterChefPointages();
+        }
+
+        function clearChefPointageSearch() {
+            document.getElementById('searchChefPointage').value = '';
+            document.getElementById('filterChefPointageDate').value = '';
+            document.getElementById('filterChefPointageActivity').value = '';
+            filterChefPointages();
+        }
+
+        // Recherche dans les pointages employé
+        function searchEmployeePointages() {
+            filterEmployeePointages();
+        }
+
+        function clearEmployeePointageSearch() {
+            document.getElementById('searchEmployeePointage').value = '';
+            document.getElementById('filterEmployeePointageDate').value = '';
+            document.getElementById('filterEmployeePointageActivity').value = '';
+            filterEmployeePointages();
+        }
+
+        // Recherche dans les bulletins employé
+        function searchEmployeeBulletins() {
+            filterEmployeeBulletins();
+        }
+
+        function clearEmployeeBulletinSearch() {
+            document.getElementById('searchEmployeeBulletin').value = '';
+            document.getElementById('filterEmployeeBulletinMois').value = '';
+            document.getElementById('filterEmployeeBulletinAnnee').value = '';
+            filterEmployeeBulletins();
+        }
+
+        // Recherche dans les archives
+        function searchArchives() {
+            const searchTerm = document.getElementById('searchArchive').value.toLowerCase();
+            const archiveContent = document.getElementById('archivesContent');
+            const archiveFolders = archiveContent.querySelectorAll('.archive-folder');
+            
+            let visibleCount = 0;
+            
+            archiveFolders.forEach(folder => {
+                const folderText = folder.textContent.toLowerCase();
+                const shouldShow = !searchTerm || folderText.includes(searchTerm);
+                folder.style.display = shouldShow ? '' : 'none';
+                
+                if (shouldShow) visibleCount++;
+            });
+            
+            // Afficher un message si aucun résultat
+            if (visibleCount === 0 && archiveFolders.length > 0) {
+                if (!archiveContent.querySelector('.no-results-message')) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'no-results-message empty-state';
+                    messageDiv.innerHTML = `
+                        <div class="empty-state-icon">🔍</div>
+                        <h3>Aucun résultat trouvé</h3>
+                        <p>Aucun document ne correspond à votre recherche</p>
+                    `;
+                    archiveContent.appendChild(messageDiv);
+                }
+            } else {
+                const messageDiv = archiveContent.querySelector('.no-results-message');
+                if (messageDiv) {
+                    messageDiv.remove();
+                }
+            }
+        }
+
+        function clearArchiveSearch() {
+            document.getElementById('searchArchive').value = '';
+            searchArchives();
         }
 
         // =============================================
@@ -4862,11 +5116,13 @@
         async function loadUsersTable() {
             try {
                 const users = await getUsers();
+                currentUsers = users;
                 const tbody = document.getElementById('usersTableBody');
                 
                 const filteredUsers = users.filter(user => user.role !== 'ADMINISTRATEUR');
                 
                 updateDepartementFilters(filteredUsers);
+                updateActivityFilters(filteredUsers);
                 
                 tbody.innerHTML = filteredUsers.map(user => {
                     const avatar = createAvatar(user);
@@ -4891,10 +5147,37 @@
                         </tr>
                     `;
                 }).join('');
+
+                // Appliquer la recherche initiale
+                searchUsers();
             } catch (error) {
                 console.error('Erreur lors du chargement des utilisateurs:', error);
                 showAlert('Erreur lors du chargement des utilisateurs: ' + error.message, 'error');
             }
+        }
+
+        function updateDepartementFilters(users) {
+            const departementFilter = document.getElementById('filterDepartement');
+            const departements = [...new Set(users.map(user => user.departement))].sort();
+            
+            departementFilter.innerHTML = '<option value="">Tous les départements</option>';
+            departements.forEach(dept => {
+                departementFilter.innerHTML += `<option value="${dept}">${dept}</option>`;
+            });
+        }
+
+        function updateActivityFilters(users) {
+            const activityFilter = document.getElementById('filterActivity');
+            const activities = [...new Set(users.map(user => user.activity).filter(activity => activity))].sort();
+            
+            activityFilter.innerHTML = '<option value="">Toutes les activités</option>';
+            activities.forEach(activity => {
+                activityFilter.innerHTML += `<option value="${activity}">${getActivityName(activity)}</option>`;
+            });
+        }
+
+        function filterUsersTable() {
+            searchUsers();
         }
 
         async function deleteUserHandler(userId) {
@@ -4910,33 +5193,6 @@
                     showAlert('Erreur lors de la suppression de l\'utilisateur: ' + error.message, 'error');
                 }
             }
-        }
-
-        function updateDepartementFilters(users) {
-            const departementFilter = document.getElementById('filterDepartement');
-            const departements = [...new Set(users.map(user => user.departement))].sort();
-            
-            departementFilter.innerHTML = '<option value="">Tous les départements</option>';
-            departements.forEach(dept => {
-                departementFilter.innerHTML += `<option value="${dept}">${dept}</option>`;
-            });
-        }
-
-        function filterUsersTable() {
-            const departementFilter = document.getElementById('filterDepartement').value;
-            const roleFilter = document.getElementById('filterRole').value;
-            
-            const rows = document.querySelectorAll('#usersTableBody tr');
-            rows.forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                const userDepartement = cells[7].textContent;
-                const userRole = cells[5].textContent;
-                
-                const departementMatch = !departementFilter || userDepartement === departementFilter;
-                const roleMatch = !roleFilter || userRole === roleFilter;
-                
-                row.style.display = departementMatch && roleMatch ? '' : 'none';
-            });
         }
 
         // Formater les montants en FCFA
@@ -5119,19 +5375,6 @@
             container.innerHTML = generateWeeklyPointagesDisplay(weeks, 'admin');
         }
 
-        function searchPointages() {
-            filterPointagesTable();
-        }
-
-        function clearPointageSearch() {
-            document.getElementById('searchPointage').value = '';
-            document.getElementById('filterPointageActivity').value = '';
-            document.getElementById('filterPointageDate').value = '';
-            document.getElementById('filterPointageChef').value = '';
-            document.getElementById('filterPointageArchived').value = 'non-archived';
-            filterPointagesTable();
-        }
-
         // Chef Pointages - Version par semaine
         async function loadChefPointages() {
             const user = getCurrentUser();
@@ -5155,6 +5398,8 @@
                         employee_name: employee ? `${employee.prenom} ${employee.nom}` : 'N/A'
                     };
                 });
+
+                currentPointages = enrichedPointages;
 
                 const container = document.getElementById('weeklyPointagesContainer');
                 
@@ -5181,6 +5426,56 @@
             }
         }
 
+        function filterChefPointages() {
+            const searchTerm = document.getElementById('searchChefPointage').value.toLowerCase();
+            const dateFilter = document.getElementById('filterChefPointageDate').value;
+            const activityFilter = document.getElementById('filterChefPointageActivity').value;
+
+            const filteredPointages = currentPointages.filter(pointage => {
+                // Filtre par date
+                if (dateFilter && pointage.date !== dateFilter) {
+                    return false;
+                }
+                
+                // Filtre par activité
+                if (activityFilter && pointage.activity !== activityFilter) {
+                    return false;
+                }
+                
+                // Recherche
+                if (searchTerm) {
+                    const searchFields = [
+                        pointage.employee_name,
+                        pointage.activity,
+                        pointage.bloc,
+                        pointage.date
+                    ].join(' ').toLowerCase();
+                    
+                    if (!searchFields.includes(searchTerm)) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+
+            const weeks = groupPointagesByWeek(filteredPointages);
+            const container = document.getElementById('weeklyPointagesContainer');
+            
+            if (filteredPointages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>Aucun pointage trouvé</h3>
+                        <p>Aucun pointage ne correspond à vos critères de recherche</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = generateWeeklyPointagesDisplay(weeks, 'chef');
+        }
+
         // Employee Pointages - Version par semaine
         async function loadEmployeePointages() {
             const user = getCurrentUser();
@@ -5203,6 +5498,8 @@
                         employee_name: `${user.prenom} ${user.nom}`
                     };
                 });
+
+                currentPointages = enrichedPointages;
 
                 const container = document.getElementById('employeeWeeklyPointagesContainer');
                 
@@ -5227,6 +5524,56 @@
                 console.error('Erreur lors du chargement des pointages employé:', error);
                 showAlert('Erreur lors du chargement des pointages: ' + error.message, 'error');
             }
+        }
+
+        function filterEmployeePointages() {
+            const searchTerm = document.getElementById('searchEmployeePointage').value.toLowerCase();
+            const dateFilter = document.getElementById('filterEmployeePointageDate').value;
+            const activityFilter = document.getElementById('filterEmployeePointageActivity').value;
+
+            const filteredPointages = currentPointages.filter(pointage => {
+                // Filtre par date
+                if (dateFilter && pointage.date !== dateFilter) {
+                    return false;
+                }
+                
+                // Filtre par activité
+                if (activityFilter && pointage.activity !== activityFilter) {
+                    return false;
+                }
+                
+                // Recherche
+                if (searchTerm) {
+                    const searchFields = [
+                        pointage.activity,
+                        pointage.bloc,
+                        pointage.date,
+                        pointage.chef_name
+                    ].join(' ').toLowerCase();
+                    
+                    if (!searchFields.includes(searchTerm)) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+
+            const weeks = groupPointagesByWeek(filteredPointages);
+            const container = document.getElementById('employeeWeeklyPointagesContainer');
+            
+            if (filteredPointages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>Aucun pointage trouvé</h3>
+                        <p>Aucun pointage ne correspond à vos critères de recherche</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = generateWeeklyPointagesDisplay(weeks, 'employe');
         }
 
         // =============================================
@@ -5592,6 +5939,7 @@
                 
                 if (type === 'bulletins') {
                     const bulletins = await getArchivedBulletins();
+                    currentArchives = bulletins;
                     
                     if (bulletins.length === 0) {
                         archivesContent.innerHTML = `
@@ -5640,6 +5988,8 @@
                             chef_name: chef ? `${chef.prenom} ${chef.nom}` : 'N/A'
                         };
                     });
+                    
+                    currentArchives = enrichedPointages;
                     
                     if (enrichedPointages.length === 0) {
                         archivesContent.innerHTML = `
@@ -6117,6 +6467,8 @@
 
             try {
                 const bulletins = await getBulletinsByEmployee(user.id);
+                currentBulletins = bulletins;
+                
                 const container = document.getElementById('employeeBulletinsContainer');
                 
                 if (bulletins.length === 0) {
@@ -6152,9 +6504,51 @@
                         </div>
                     `;
                 }).join('');
+
+                // Appliquer les filtres initiaux
+                filterEmployeeBulletins();
             } catch (error) {
                 console.error('Erreur lors du chargement des bulletins employé:', error);
                 showAlert('Erreur lors du chargement des bulletins: ' + error.message, 'error');
+            }
+        }
+
+        function filterEmployeeBulletins() {
+            const searchTerm = document.getElementById('searchEmployeeBulletin').value.toLowerCase();
+            const moisFilter = document.getElementById('filterEmployeeBulletinMois').value;
+            const anneeFilter = document.getElementById('filterEmployeeBulletinAnnee').value;
+
+            const folders = document.querySelectorAll('#employeeBulletinsContainer .archive-folder');
+            let visibleCount = 0;
+
+            folders.forEach(folder => {
+                const folderText = folder.textContent.toLowerCase();
+                const shouldShow = (!searchTerm || folderText.includes(searchTerm)) &&
+                                 (!moisFilter || folderText.includes(moisFilter.toLowerCase())) &&
+                                 (!anneeFilter || folderText.includes(anneeFilter));
+
+                folder.style.display = shouldShow ? '' : 'none';
+                if (shouldShow) visibleCount++;
+            });
+
+            // Afficher un message si aucun résultat
+            if (visibleCount === 0 && folders.length > 0) {
+                if (!document.getElementById('employeeNoBulletinsMessage')) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.id = 'employeeNoBulletinsMessage';
+                    messageDiv.className = 'empty-state';
+                    messageDiv.innerHTML = `
+                        <div class="empty-state-icon">🔍</div>
+                        <h3>Aucun bulletin trouvé</h3>
+                        <p>Aucun bulletin ne correspond à vos critères de recherche</p>
+                    `;
+                    document.getElementById('employeeBulletinsContainer').appendChild(messageDiv);
+                }
+            } else {
+                const messageDiv = document.getElementById('employeeNoBulletinsMessage');
+                if (messageDiv) {
+                    messageDiv.remove();
+                }
             }
         }
 
