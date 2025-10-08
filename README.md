@@ -1615,11 +1615,11 @@
         /* ============================================= */
 
         .export-section {
-            background: #f8fafc;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--chef-color);
+            background: #8550cf;
+            padding: 1rem;
+            border-radius: 2px;
+            margin: 1rem 0;
+            border-left: 2px solid var(--chef-color);
         }
 
         .export-buttons {
@@ -1633,8 +1633,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 1.5rem;
-            background: white;
+            padding: 0rem;
+            background: rgb(48, 241, 4);
             border: 2px solid var(--border);
             border-radius: 8px;
             cursor: pointer;
@@ -1643,14 +1643,14 @@
         }
 
         .export-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
             border-color: var(--chef-color);
         }
 
         .export-icon {
-            font-size: 1.5rem; /* TAILLE RÉDUITE POUR LES ICÔNES */
-            margin-bottom: 0.8rem;
+            font-size: 2rem;
+            margin-bottom: 0.1rem;
         }
 
         .export-title {
@@ -1707,7 +1707,7 @@
 
         .export-table th {
             background: var(--chef-color);
-            color: white;
+            color: rgb(250, 248, 248);
             padding: 0.8rem;
             text-align: left;
             font-weight: 600;
@@ -2886,20 +2886,20 @@
                         <div class="export-buttons">
                             <div class="export-btn" onclick="exportPointagesPDF()">
                                 <div class="export-icon">📄</div>
-                                <div class="export-title">PDF Professionnel</div>
-                                <div class="export-description">Document formaté avec en-tête et totaux, idéal pour l'archivage</div>
+                                <div class="export-title">PDF</div>
+                                <div class="export-description"></div>
                             </div>
                             
                             <div class="export-btn" onclick="exportPointagesExcel()">
                                 <div class="export-icon">📊</div>
-                                <div class="export-title">Excel Structuré</div>
-                                <div class="export-description">Fichier tableur avec mise en forme pour analyse des données</div>
+                                <div class="export-title">Excel</div>
+                                <div class="export-description"></div>
                             </div>
                             
                             <div class="export-btn" onclick="exportPointagesPNG()">
                                 <div class="export-icon">🖼️</div>
                                 <div class="export-title">Image PNG</div>
-                                <div class="export-description">Capture d'écran haute qualité pour partage rapide</div>
+                                <div class="export-description"></div>
                             </div>
                         </div>
 
@@ -2909,14 +2909,14 @@
                             <div class="whatsapp-input-section">
                                 <div class="whatsapp-input-group">
                                     <input type="tel" id="whatsappNumber" class="whatsapp-input" 
-                                           placeholder="Numéro WhatsApp (format international: +22501234567)" 
+                                           placeholder="Numéro WhatsApp (format international: +241xxxxxxx)" 
                                            pattern="^\+[0-9]{10,15}$">
                                     <button class="btn btn-whatsapp" onclick="sendPointagesViaWhatsApp()">
                                         💬 Envoyer
                                     </button>
                                 </div>
                                 <div class="whatsapp-example">
-                                    Format requis: +22501234567 (indicatif pays + numéro)
+                                    Format requis: +241xxxxxxx (indicatif pays + numéro)
                                 </div>
                             </div>
                         </div>
@@ -3951,7 +3951,7 @@
                 // Validation du format international
                 const phoneRegex = /^\+[0-9]{10,15}$/;
                 if (!phoneRegex.test(phoneNumber)) {
-                    showAlert('Format de numéro invalide. Utilisez le format international: +22501234567', 'error');
+                    showAlert('Format de numéro invalide. Utilisez le format international: +241xxxxxxxxx', 'error');
                     return;
                 }
 
@@ -6540,9 +6540,9 @@
                             </div>
                             <div class="company-details">
                                 Plantation de palmiers à huile<br>
-                                BP 1234, Abidjan, Côte d'Ivoire<br>
-                                Tél: +225 01 23 45 67 89<br>
-                                Email: contact@mkj-service.ci
+                                BP 1234, Makouké, Gabon<br>
+                                Tél: +212710716991<br>
+                                Email: contact@mkj-service.com
                             </div>
                         </div>
                         
