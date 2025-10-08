@@ -1649,7 +1649,7 @@
         }
 
         .export-icon {
-            font-size: 2.5rem;
+            font-size: 1.5rem; /* TAILLE RÉDUITE POUR LES ICÔNES */
             margin-bottom: 0.8rem;
         }
 
@@ -6540,9 +6540,9 @@
                             </div>
                             <div class="company-details">
                                 Plantation de palmiers à huile<br>
-                                BP 1234, Makouké, Gabon<br>
-                                Tél: +212710716991<br>
-                                Email: contact@mkj-service.com
+                                BP 1234, Abidjan, Côte d'Ivoire<br>
+                                Tél: +225 01 23 45 67 89<br>
+                                Email: contact@mkj-service.ci
                             </div>
                         </div>
                         
