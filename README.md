@@ -1611,6 +1611,123 @@
         }
 
         /* ============================================= */
+        /* NOUVEAUX STYLES POUR L'EXPORT */
+        /* ============================================= */
+
+        .export-section {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--chef-color);
+        }
+
+        .export-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .export-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--chef-color);
+        }
+
+        .export-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .export-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .export-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .whatsapp-input-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .whatsapp-input-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .whatsapp-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .whatsapp-input:focus {
+            outline: none;
+            border-color: var(--chef-color);
+            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+        }
+
+        .whatsapp-example {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .export-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .export-table th {
+            background: var(--chef-color);
+            color: white;
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .export-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .export-table tfoot {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+
+        .export-table tfoot td {
+            border-top: 2px solid var(--chef-color);
+        }
+
+        /* ============================================= */
         /* MEDIA QUERIES POUR LA RESPONSIVE */
         /* ============================================= */
 
@@ -1809,6 +1926,18 @@
             
             .option-icon {
                 font-size: 2rem;
+            }
+            
+            .export-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .whatsapp-input-group {
+                flex-direction: column;
+            }
+            
+            .whatsapp-input {
+                width: 100%;
             }
             
             /* Responsive pour les tableaux par semaine */
@@ -2749,6 +2878,50 @@
                         </div>
                     </div>
 
+                    <!-- NOUVELLE SECTION D'EXPORT -->
+                    <div class="export-section">
+                        <h4>📤 Export des Pointages du Jour</h4>
+                        <p>Exportez vos pointages d'aujourd'hui dans différents formats :</p>
+                        
+                        <div class="export-buttons">
+                            <div class="export-btn" onclick="exportPointagesPDF()">
+                                <div class="export-icon">📄</div>
+                                <div class="export-title">PDF Professionnel</div>
+                                <div class="export-description">Document formaté avec en-tête et totaux, idéal pour l'archivage</div>
+                            </div>
+                            
+                            <div class="export-btn" onclick="exportPointagesExcel()">
+                                <div class="export-icon">📊</div>
+                                <div class="export-title">Excel Structuré</div>
+                                <div class="export-description">Fichier tableur avec mise en forme pour analyse des données</div>
+                            </div>
+                            
+                            <div class="export-btn" onclick="exportPointagesPNG()">
+                                <div class="export-icon">🖼️</div>
+                                <div class="export-title">Image PNG</div>
+                                <div class="export-description">Capture d'écran haute qualité pour partage rapide</div>
+                            </div>
+                        </div>
+
+                        <!-- Section WhatsApp -->
+                        <div style="margin-top: 1.5rem;">
+                            <h5>💬 Envoi par WhatsApp</h5>
+                            <div class="whatsapp-input-section">
+                                <div class="whatsapp-input-group">
+                                    <input type="tel" id="whatsappNumber" class="whatsapp-input" 
+                                           placeholder="Numéro WhatsApp (format international: +22501234567)" 
+                                           pattern="^\+[0-9]{10,15}$">
+                                    <button class="btn btn-whatsapp" onclick="sendPointagesViaWhatsApp()">
+                                        💬 Envoyer
+                                    </button>
+                                </div>
+                                <div class="whatsapp-example">
+                                    Format requis: +22501234567 (indicatif pays + numéro)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Pointages groupés par semaine -->
                     <div id="weeklyPointagesContainer">
                         <!-- Contenu généré dynamiquement -->
@@ -2920,6 +3093,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         // Configuration Supabase
         const SUPABASE_URL = 'https://nvnxcwffhkhmrophvhbh.supabase.co';
@@ -3318,686 +3495,533 @@
         }
 
         // =============================================
-        // FONCTIONS POUR LES BULLETINS EMPLOYÉ
+        // FONCTIONS D'EXPORT DES POINTAGES (CHEF)
         // =============================================
 
-        async function loadEmployeeBulletins() {
-            const user = getCurrentUser();
-            if (!user || user.role !== 'EMPLOYE') return;
-
+        // Fonction pour obtenir les pointages du jour
+        async function getTodayPointages() {
             try {
-                const bulletins = await getBulletinsByEmployee(user.id);
-                const container = document.getElementById('employeeBulletinsContainer');
-                
-                if (bulletins.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-state-icon">💰</div>
-                            <h3>Aucun bulletin de paie disponible</h3>
-                            <p>Vos bulletins de paie apparaîtront ici une fois générés par l'administrateur</p>
-                        </div>
-                    `;
-                    return;
+                const user = getCurrentUser();
+                if (!user || user.role !== 'CHEF') {
+                    throw new Error('Accès réservé aux chefs');
                 }
 
-                container.innerHTML = bulletins.map(bulletin => {
-                    const dateGen = new Date(bulletin.date_generation);
-                    const moisAnnee = dateGen.toLocaleDateString('fr-FR', { 
-                        month: 'long', 
-                        year: 'numeric' 
-                    });
-                    
-                    return `
-                        <div class="archive-folder" onclick="viewEmployeeBulletin(${bulletin.id})">
-                            <div class="folder-header">
-                                <div class="folder-title">Bulletin ${moisAnnee}</div>
-                                <div class="folder-count">${formatFCFA(bulletin.net_a_payer)}</div>
-                            </div>
-                            <div class="folder-details">
-                                <div><strong>Période:</strong> ${bulletin.periode}</div>
-                                <div><strong>Salaire brut:</strong> ${formatFCFA(bulletin.salaire_brut)}</div>
-                                <div><strong>Net à payer:</strong> ${formatFCFA(bulletin.net_a_payer)}</div>
-                                <div><strong>Statut:</strong> ${bulletin.statut}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (error) {
-                console.error('Erreur lors du chargement des bulletins employé:', error);
-                showAlert('Erreur lors du chargement des bulletins: ' + error.message, 'error');
-            }
-        }
-
-        async function viewEmployeeBulletin(bulletinId) {
-            try {
-                const bulletins = await getBulletinsByEmployee(getCurrentUser().id);
-                const bulletin = bulletins.find(b => b.id === bulletinId);
+                const today = new Date().toISOString().split('T')[0];
                 
-                if (!bulletin) {
-                    showAlert('Bulletin non trouvé', 'error');
-                    return;
-                }
+                const pointages = await getPointages();
+                
+                // Filtrer les pointages du chef pour aujourd'hui
+                const todayPointages = pointages.filter(p => 
+                    p.chef_id === user.id && 
+                    p.date === today
+                );
 
-                document.getElementById('bulletinContent').innerHTML = genererBulletinHTML(bulletin);
-                showSection('bulletinDetail');
-            } catch (error) {
-                console.error('Erreur lors de l\'affichage du bulletin:', error);
-                showAlert('Erreur lors de l\'affichage du bulletin: ' + error.message, 'error');
-            }
-        }
-
-        // =============================================
-        // FONCTIONS POUR LA MODIFICATION DES UTILISATEURS
-        // =============================================
-
-        async function editUser(userId) {
-            try {
+                // Enrichir avec les noms des employés
                 const users = await getUsers();
-                const user = users.find(u => u.id === userId);
-                
-                if (!user) {
-                    showAlert('Utilisateur non trouvé', 'error');
-                    return;
-                }
-
-                // Remplir le formulaire de modification
-                document.getElementById('editUserId').value = user.id;
-                document.getElementById('editUserRole').value = user.role;
-                document.getElementById('editUsername').value = user.username;
-                document.getElementById('editNom').value = user.nom;
-                document.getElementById('editPrenom').value = user.prenom;
-                document.getElementById('editDepartement').value = user.departement;
-                document.getElementById('editTelephone').value = user.telephone || '';
-                document.getElementById('editEmail').value = user.email || '';
-                document.getElementById('editColor').value = user.color;
-
-                // Gérer l'affichage de la photo
-                const photoPreview = document.getElementById('editPhotoPreview');
-                if (user.photo) {
-                    photoPreview.innerHTML = '';
-                    const img = document.createElement('img');
-                    img.src = user.photo;
-                    img.className = 'photo-preview';
-                    photoPreview.appendChild(img);
-                } else {
-                    photoPreview.innerHTML = '👤';
-                    photoPreview.className = 'photo-placeholder';
-                }
-
-                // Gérer les champs d'activité
-                toggleEditActivityField();
-                if (user.role === 'CHEF') {
-                    document.getElementById('editActivity').value = user.activity || 'recolte';
-                } else if (user.role === 'EMPLOYE') {
-                    document.getElementById('editEmployeeActivity').value = user.activity || 'recolte';
-                }
-
-                showSection('adminEditUser');
-            } catch (error) {
-                console.error('Erreur lors du chargement des données utilisateur:', error);
-                showAlert('Erreur lors du chargement des données: ' + error.message, 'error');
-            }
-        }
-
-        function toggleEditActivityField() {
-            const role = document.getElementById('editUserRole').value;
-            const activityField = document.getElementById('editActivityField');
-            const employeeActivityField = document.getElementById('editEmployeeActivityField');
-            
-            if (role === 'CHEF') {
-                activityField.style.display = 'block';
-                employeeActivityField.style.display = 'none';
-                document.getElementById('editActivity').required = true;
-                document.getElementById('editEmployeeActivity').required = false;
-            } else if (role === 'EMPLOYE') {
-                activityField.style.display = 'none';
-                employeeActivityField.style.display = 'block';
-                document.getElementById('editActivity').required = false;
-                document.getElementById('editEmployeeActivity').required = true;
-            } else {
-                activityField.style.display = 'none';
-                employeeActivityField.style.display = 'none';
-                document.getElementById('editActivity').required = false;
-                document.getElementById('editEmployeeActivity').required = false;
-            }
-        }
-
-        function previewEditPhoto(event) {
-            const input = event.target;
-            const preview = document.getElementById('editPhotoPreview');
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    preview.innerHTML = '';
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'photo-preview';
-                    preview.appendChild(img);
-                }
-                
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        async function handleEditUser(event) {
-            event.preventDefault();
-            
-            try {
-                const userId = document.getElementById('editUserId').value;
-                const photoData = await getEditPhotoData();
-                const role = document.getElementById('editUserRole').value;
-                
-                const updatedUser = {
-                    username: document.getElementById('editUsername').value,
-                    role: role,
-                    color: document.getElementById('editColor').value,
-                    nom: document.getElementById('editNom').value,
-                    prenom: document.getElementById('editPrenom').value,
-                    departement: document.getElementById('editDepartement').value,
-                    telephone: document.getElementById('editTelephone').value,
-                    email: document.getElementById('editEmail').value,
-                    activity: role === 'CHEF' ? document.getElementById('editActivity').value : 
-                             role === 'EMPLOYE' ? document.getElementById('editEmployeeActivity').value : null
-                };
-
-                // Ne mettre à jour le mot de passe que s'il est renseigné
-                const password = document.getElementById('editPassword').value;
-                if (password) {
-                    updatedUser.password = password;
-                }
-
-                // Ne mettre à jour la photo que si une nouvelle est sélectionnée
-                if (photoData) {
-                    updatedUser.photo = photoData;
-                }
-
-                const users = await getUsers();
-                const existingUser = users.find(u => u.username === updatedUser.username && u.id !== parseInt(userId));
-                
-                if (existingUser) {
-                    showAlert('Cet identifiant est déjà utilisé par un autre utilisateur', 'error');
-                    return;
-                }
-
-                const result = await updateUser(userId, updatedUser);
-                
-                if (result) {
-                    showAlert('Utilisateur modifié avec succès', 'success');
-                    showSection('adminUsers');
-                    loadUsersTable();
-                }
-            } catch (error) {
-                console.error('Erreur lors de la modification de l\'utilisateur:', error);
-                showAlert('Erreur lors de la modification de l\'utilisateur: ' + error.message, 'error');
-            }
-        }
-
-        function getEditPhotoData() {
-            const input = document.getElementById('editPhotoInput');
-            if (input.files && input.files[0]) {
-                return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        resolve(e.target.result);
+                const enrichedPointages = todayPointages.map(pointage => {
+                    const employee = users.find(u => u.id === pointage.employee_id);
+                    return {
+                        ...pointage,
+                        employee_name: employee ? `${employee.prenom} ${employee.nom}` : 'N/A'
                     };
-                    reader.readAsDataURL(input.files[0]);
                 });
+
+                return enrichedPointages;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des pointages du jour:', error);
+                throw error;
             }
-            return Promise.resolve(null);
         }
 
-        // =============================================
-        // FONCTIONS POUR LA GESTION DES POINTAGES PAR SEMAINE
-        // =============================================
+        // Fonction pour générer le tableau des pointages du jour
+        function generateTodayPointagesTable(pointages) {
+            if (!pointages || pointages.length === 0) {
+                return '<p style="text-align: center; padding: 2rem; color: var(--text-light);">Aucun pointage trouvé pour aujourd\'hui</p>';
+            }
 
-        // Fonction pour grouper les pointages par semaine
-        function groupPointagesByWeek(pointages) {
-            const weeks = {};
+            const user = getCurrentUser();
+            const today = new Date().toLocaleDateString('fr-FR');
+            
+            let html = `
+                <div style="text-align: center; margin-bottom: 1rem; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                    <h3 style="color: var(--chef-color); margin-bottom: 0.5rem;">Pointages du ${today}</h3>
+                    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                        <div><strong>Chef:</strong> ${user.prenom} ${user.nom}</div>
+                        <div><strong>Activité:</strong> ${getActivityName(user.activity)}</div>
+                        <div><strong>Total:</strong> ${pointages.length} pointage(s)</div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="export-table">
+                        <thead>
+                            <tr>
+                                <th>Employé</th>
+                                <th>Activité</th>
+                                <th>Bloc</th>
+                                <th>Sous-quantités</th>
+                                <th>Quantité Totale</th>
+                                <th>Prix Unitaire</th>
+                                <th>Prix Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            let totalGeneral = 0;
             
             pointages.forEach(pointage => {
-                const date = new Date(pointage.date);
-                const weekNumber = getWeekNumber(date);
-                const year = date.getFullYear();
-                const weekKey = `${year}-${weekNumber}`;
+                const sousQuantites = pointage.sub_quantities && pointage.sub_quantities.length > 0 
+                    ? pointage.sub_quantities.join(' + ') 
+                    : '-';
                 
-                if (!weeks[weekKey]) {
-                    const weekStart = getStartOfWeek(date);
-                    const weekEnd = getEndOfWeek(date);
-                    
-                    weeks[weekKey] = {
-                        weekNumber: weekNumber,
-                        year: year,
-                        startDate: weekStart,
-                        endDate: weekEnd,
-                        pointages: [],
-                        totalPointages: 0,
-                        totalQuantite: 0,
-                        totalPrix: 0,
-                        employes: new Set()
-                    };
-                }
-                
-                weeks[weekKey].pointages.push(pointage);
-                weeks[weekKey].totalPointages++;
-                weeks[weekKey].totalQuantite += pointage.qty_total || 0;
-                weeks[weekKey].totalPrix += pointage.total_price || 0;
-                weeks[weekKey].employes.add(pointage.employee_id);
-            });
-            
-            return weeks;
-        }
+                const prixTotal = pointage.total_price || 0;
+                totalGeneral += prixTotal;
 
-        // Obtenir le numéro de semaine ISO
-        function getWeekNumber(date) {
-            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-            const dayNum = d.getUTCDay() || 7;
-            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-        }
-
-        // Obtenir le début de la semaine (lundi)
-        function getStartOfWeek(date) {
-            const d = new Date(date);
-            const day = d.getDay();
-            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-            return new Date(d.setDate(diff));
-        }
-
-        // Obtenir la fin de la semaine (dimanche)
-        function getEndOfWeek(date) {
-            const start = getStartOfWeek(date);
-            const end = new Date(start);
-            end.setDate(start.getDate() + 6);
-            return end;
-        }
-
-        // Formater une date en français
-        function formatDateFr(date) {
-            return date.toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-        }
-
-        // Générer l'affichage des pointages par semaine
-        function generateWeeklyPointagesDisplay(weeks, userRole = 'admin') {
-            let html = '';
-            
-            // Trier les semaines par date (plus récentes en premier)
-            const sortedWeeks = Object.values(weeks).sort((a, b) => 
-                new Date(b.startDate) - new Date(a.startDate)
-            );
-            
-            if (sortedWeeks.length === 0) {
-                return `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <h3>Aucun pointage trouvé</h3>
-                        <p>Les pointages apparaîtront ici une fois créés</p>
-                    </div>
-                `;
-            }
-            
-            sortedWeeks.forEach(week => {
-                const weekStartFormatted = formatDateFr(week.startDate);
-                const weekEndFormatted = formatDateFr(week.endDate);
-                const uniqueEmployes = week.employes.size;
-                
                 html += `
-                    <div class="week-container">
-                        <div class="week-header" onclick="toggleWeekContent('${week.year}-${week.weekNumber}')">
-                            <div>
-                                <div class="week-title">Semaine ${week.weekNumber} - ${week.year}</div>
-                                <div class="week-dates">${weekStartFormatted} au ${weekEndFormatted}</div>
-                            </div>
-                            <div class="week-stats">
-                                <div class="week-stat">${week.totalPointages} pointages</div>
-                                <div class="week-stat">${uniqueEmployes} employés</div>
-                                <div class="week-stat">${week.totalQuantite.toFixed(2)} quantité</div>
-                                <div class="week-stat">${formatFCFA(week.totalPrix)}</div>
-                            </div>
-                        </div>
-                        <div class="week-content" id="week-${week.year}-${week.weekNumber}">
-                            <div class="table-container">
-                                <table class="week-table">
-                                    <thead>
-                                        <tr>
-                                            ${userRole === 'admin' ? '<th>ID</th>' : ''}
-                                            <th>Date</th>
-                                            <th>Employé</th>
-                                            <th>Présence</th>
-                                            <th>Activité</th>
-                                            <th>Bloc</th>
-                                            <th>Sous-quantités</th>
-                                            <th>Quantité totale</th>
-                                            <th>Prix unitaire</th>
-                                            <th>Prix total</th>
-                                            ${userRole === 'admin' ? '<th>Chef</th>' : ''}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${week.pointages.map(pointage => {
-                                            const subQuantities = pointage.sub_quantities || [];
-                                            const sousQuantitesFormatees = subQuantities.length > 0 ? subQuantities.join('+') : '-';
-                                            const isPresent = pointage.presence === 'Présent';
-                                            
-                                            return `
-                                                <tr>
-                                                    ${userRole === 'admin' ? `<td>${pointage.id}</td>` : ''}
-                                                    <td>${pointage.date}</td>
-                                                    <td>${pointage.employee_name || 'N/A'}</td>
-                                                    <td>
-                                                        <span style="color: ${isPresent ? 'var(--success)' : 'var(--danger)'}; font-weight: 500;">
-                                                            ${pointage.presence}
-                                                        </span>
-                                                    </td>
-                                                    <td>${getActivityName(pointage.activity)}</td>
-                                                    <td>${pointage.bloc || '-'}</td>
-                                                    <td>${sousQuantitesFormatees}</td>
-                                                    <td>${pointage.qty_total || 0}</td>
-                                                    <td>${formatFCFA(pointage.unit_price || 0)}</td>
-                                                    <td style="font-weight: 500;">${formatFCFA(pointage.total_price || 0)}</td>
-                                                    ${userRole === 'admin' ? `<td>${pointage.chef_name || 'N/A'}</td>` : ''}
-                                                </tr>
-                                            `;
-                                        }).join('')}
-                                        <tr class="week-total">
-                                            ${userRole === 'admin' ? '<td colspan="6"></td>' : '<td colspan="5"></td>'}
-                                            <td><strong>Total semaine:</strong></td>
-                                            <td><strong>${week.totalQuantite.toFixed(2)}</strong></td>
-                                            <td></td>
-                                            <td><strong>${formatFCFA(week.totalPrix)}</strong></td>
-                                            ${userRole === 'admin' ? '<td></td>' : ''}
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    <tr>
+                        <td>${pointage.employee_name}</td>
+                        <td>${getActivityName(pointage.activity)}</td>
+                        <td>${pointage.bloc || '-'}</td>
+                        <td>${sousQuantites}</td>
+                        <td>${pointage.qty_total || 0}</td>
+                        <td>${formatFCFA(pointage.unit_price || 0)}</td>
+                        <td style="font-weight: bold;">${formatFCFA(prixTotal)}</td>
+                    </tr>
                 `;
             });
-            
+
+            html += `
+                        </tbody>
+                        <tfoot>
+                            <tr style="background: var(--chef-color); color: white; font-weight: bold;">
+                                <td colspan="6" style="text-align: right;">Total Général:</td>
+                                <td>${formatFCFA(totalGeneral)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+
             return html;
         }
 
-        // Basculer l'affichage du contenu d'une semaine
-        function toggleWeekContent(weekId) {
-            const content = document.getElementById(`week-${weekId}`);
-            content.classList.toggle('expanded');
+        // 📄 EXPORT PDF - Format professionnel avec en-tête et totaux
+        async function exportPointagesPDF() {
+            try {
+                showAlert('Génération du PDF en cours...', 'info');
+                
+                const pointages = await getTodayPointages();
+                if (pointages.length === 0) {
+                    showAlert('Aucun pointage trouvé pour aujourd\'hui', 'warning');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // En-tête professionnel
+                const user = getCurrentUser();
+                const today = new Date().toLocaleDateString('fr-FR');
+                
+                // Logo et titre
+                doc.setFontSize(16);
+                doc.setTextColor(44, 123, 229);
+                doc.text('MKJ SERVICE - Pointages du Jour', 105, 15, { align: 'center' });
+                
+                // Informations détaillées
+                doc.setFontSize(10);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Date: ${today} | Chef: ${user.prenom} ${user.nom}`, 105, 22, { align: 'center' });
+                doc.text(`Activité: ${getActivityName(user.activity)} | Total: ${pointages.length} pointage(s)`, 105, 27, { align: 'center' });
+
+                // Préparer les données du tableau
+                const tableData = pointages.map(pointage => {
+                    const sousQuantites = pointage.sub_quantities && pointage.sub_quantities.length > 0 
+                        ? pointage.sub_quantities.join(' + ') 
+                        : '-';
+                    
+                    return [
+                        pointage.employee_name,
+                        getActivityName(pointage.activity),
+                        pointage.bloc || '-',
+                        sousQuantites,
+                        pointage.qty_total || 0,
+                        formatFCFA(pointage.unit_price || 0),
+                        formatFCFA(pointage.total_price || 0)
+                    ];
+                });
+
+                // Calcul du total général
+                const totalGeneral = pointages.reduce((sum, p) => sum + (p.total_price || 0), 0);
+
+                // Générer le tableau avec style professionnel
+                doc.autoTable({
+                    startY: 35,
+                    head: [['Employé', 'Activité', 'Bloc', 'Sous-quantités', 'Quantité', 'Prix Unitaire', 'Prix Total']],
+                    body: tableData,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [255, 140, 0], // Orange chef
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold',
+                        fontSize: 9
+                    },
+                    alternateRowStyles: {
+                        fillColor: [245, 245, 245]
+                    },
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 2,
+                        lineColor: [200, 200, 200],
+                        lineWidth: 0.1
+                    },
+                    margin: { top: 35 },
+                    didDrawPage: function (data) {
+                        // Ajouter le total général en bas de la dernière page
+                        if (data.pageNumber === data.pageCount) {
+                            const finalY = data.cursor.y + 10;
+                            doc.setFontSize(10);
+                            doc.setTextColor(255, 140, 0);
+                            doc.setFont(undefined, 'bold');
+                            doc.text('TOTAL GÉNÉRAL:', 140, finalY);
+                            doc.text(formatFCFA(totalGeneral), 190, finalY, { align: 'right' });
+                        }
+                    }
+                });
+
+                // Pied de page professionnel
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.setTextColor(150, 150, 150);
+                    doc.text(`Page ${i} / ${pageCount} - Généré le ${new Date().toLocaleString('fr-FR')} - MKJ SERVICE`, 105, doc.internal.pageSize.height - 10, { align: 'center' });
+                }
+
+                // Télécharger le PDF avec nom de fichier professionnel
+                const fileName = `Pointages_${today.replace(/\//g, '-')}_${user.prenom}_${user.nom}.pdf`;
+                doc.save(fileName);
+                
+                showAlert('PDF généré avec succès', 'success');
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'export PDF:', error);
+                showAlert('Erreur lors de la génération du PDF: ' + error.message, 'error');
+            }
         }
 
-        // =============================================
-        // FONCTIONS POUR LA GESTION DE LA PAIE (CORRIGÉES)
-        // =============================================
+        // 📊 EXPORT EXCEL - Fichier structuré avec mise en forme
+        async function exportPointagesExcel() {
+            try {
+                showAlert('Génération du fichier Excel en cours...', 'info');
+                
+                const pointages = await getTodayPointages();
+                if (pointages.length === 0) {
+                    showAlert('Aucun pointage trouvé pour aujourd\'hui', 'warning');
+                    return;
+                }
 
-        // Générer un bulletin de paie professionnel
-        function genererBulletinHTML(bulletin) {
-            const user = getCurrentUser();
-            const isAdmin = user.role === 'ADMINISTRATEUR';
-            
-            return `
-                <div class="bulletin-content">
-                    <!-- En-tête -->
-                    <div class="bulletin-header">
-                        <div class="company-info">
-                            <div class="company-logo">
-                                <div class="logo-icon">🌴</div>
-                                <div class="company-name">MKJ SERVICE</div>
-                            </div>
-                            <div class="company-details">
-                                Plantation de palmiers à huile<br>
-                                BP 1234, Abidjan, Côte d'Ivoire<br>
-                                Tél: +225 01 23 45 67 89<br>
-                                Email: contact@mkj-service.ci
-                            </div>
-                        </div>
-                        
-                        <div class="document-title">
-                            <div class="title-main">BULLETIN DE PAIE</div>
-                            <div class="title-sub">Période: ${bulletin.periode}</div>
-                        </div>
-                        
-                        <div class="employee-header-section">
-                            <div class="employee-photo">
-                                ${bulletin.employee_photo ? 
-                                    `<img src="${bulletin.employee_photo}" style="width:100%;height:100%;object-fit:cover;">` : 
-                                    `<div class="photo-placeholder">PHOTO</div>`
+                const user = getCurrentUser();
+                const today = new Date().toLocaleDateString('fr-FR');
+
+                // Préparer les données avec structure professionnelle
+                const data = [
+                    // En-tête principal
+                    ['MKJ SERVICE - POINTAGES DU JOUR'],
+                    [`Date: ${today} | Chef: ${user.prenom} ${user.nom}`],
+                    [`Activité: ${getActivityName(user.activity)} | Total pointages: ${pointages.length}`],
+                    [], // Ligne vide
+                    // En-tête du tableau
+                    ['Employé', 'Activité', 'Bloc', 'Sous-quantités', 'Quantité Totale', 'Prix Unitaire', 'Prix Total']
+                ];
+
+                let totalGeneral = 0;
+                
+                // Données des pointages
+                pointages.forEach(pointage => {
+                    const sousQuantites = pointage.sub_quantities && pointage.sub_quantities.length > 0 
+                        ? pointage.sub_quantities.join(' + ') 
+                        : '-';
+                    
+                    const prixTotal = pointage.total_price || 0;
+                    totalGeneral += prixTotal;
+
+                    data.push([
+                        pointage.employee_name,
+                        getActivityName(pointage.activity),
+                        pointage.bloc || '-',
+                        sousQuantites,
+                        pointage.qty_total || 0,
+                        pointage.unit_price || 0,
+                        prixTotal
+                    ]);
+                });
+
+                // Ligne de total général
+                data.push([]); // Ligne vide
+                data.push(['TOTAL GÉNÉRAL', '', '', '', '', '', totalGeneral]);
+
+                // Créer le workbook
+                const ws = XLSX.utils.aoa_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Pointages');
+
+                // Appliquer les styles professionnels
+                if (ws['!ref']) {
+                    const range = XLSX.utils.decode_range(ws['!ref']);
+                    
+                    // Fusionner les cellules du titre
+                    if (!ws['!merges']) ws['!merges'] = [];
+                    ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 6 } });
+                    ws['!merges'].push({ s: { r: 1, c: 0 }, e: { r: 1, c: 6 } });
+                    ws['!merges'].push({ s: { r: 2, c: 0 }, e: { r: 2, c: 6 } });
+
+                    // Style de l'en-tête principal
+                    for (let C = range.s.c; C <= range.e.c; ++C) {
+                        const cell_address = { c: C, r: 0 };
+                        const cell_ref = XLSX.utils.encode_cell(cell_address);
+                        if (!ws[cell_ref]) continue;
+                        ws[cell_ref].s = {
+                            font: { sz: 14, bold: true, color: { rgb: "2C7BE5" } },
+                            alignment: { horizontal: "center" },
+                            fill: { fgColor: { rgb: "F8FAFC" } }
+                        };
+                    }
+
+                    // Style des sous-titres
+                    for (let R = 1; R <= 2; R++) {
+                        for (let C = range.s.c; C <= range.e.c; ++C) {
+                            const cell_address = { c: C, r: R };
+                            const cell_ref = XLSX.utils.encode_cell(cell_address);
+                            if (!ws[cell_ref]) continue;
+                            ws[cell_ref].s = {
+                                font: { sz: 10, color: { rgb: "666666" } },
+                                alignment: { horizontal: "center" }
+                            };
+                        }
+                    }
+
+                    // Style de l'en-tête du tableau
+                    for (let C = range.s.c; C <= range.e.c; ++C) {
+                        const cell_address = { c: C, r: 4 };
+                        const cell_ref = XLSX.utils.encode_cell(cell_address);
+                        if (!ws[cell_ref]) continue;
+                        ws[cell_ref].s = {
+                            fill: { fgColor: { rgb: "FF8C00" } },
+                            font: { bold: true, color: { rgb: "FFFFFF" } },
+                            border: {
+                                top: { style: "thin", color: { rgb: "000000" } },
+                                left: { style: "thin", color: { rgb: "000000" } },
+                                bottom: { style: "thin", color: { rgb: "000000" } },
+                                right: { style: "thin", color: { rgb: "000000" } }
+                            }
+                        };
+                    }
+
+                    // Style des données du tableau
+                    for (let R = 5; R <= range.e.r - 2; R++) {
+                        for (let C = range.s.c; C <= range.e.c; ++C) {
+                            const cell_address = { c: C, r: R };
+                            const cell_ref = XLSX.utils.encode_cell(cell_address);
+                            if (!ws[cell_ref]) continue;
+                            ws[cell_ref].s = {
+                                border: {
+                                    top: { style: "thin", color: { rgb: "E2E8F0" } },
+                                    left: { style: "thin", color: { rgb: "E2E8F0" } },
+                                    bottom: { style: "thin", color: { rgb: "E2E8F0" } },
+                                    right: { style: "thin", color: { rgb: "E2E8F0" } }
                                 }
-                            </div>
-                            <div class="employee-details-compact">
-                                <div class="info-row">
-                                    <div class="info-label">Matricule:</div>
-                                    <div class="info-value">${bulletin.employee_id}</div>
-                                </div>
-                                <div class="info-row">
-                                    <div class="info-label">Nom:</div>
-                                    <div class="info-value">${bulletin.employee_nom}</div>
-                                </div>
-                                <div class="info-row">
-                                    <div class="info-label">Prénom:</div>
-                                    <div class="info-value">${bulletin.employee_prenom}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            };
+                        }
+                    }
 
-                    <!-- Informations de période -->
-                    <div class="period-info">
-                        <div class="period-dates">
-                            <div class="period-item">
-                                <div class="period-label">Période:</div>
-                                <div>${bulletin.periode}</div>
-                            </div>
-                            <div class="period-item">
-                                <div class="period-label">Date de paie:</div>
-                                <div>${new Date(bulletin.date_generation).toLocaleDateString('fr-FR')}</div>
-                            </div>
-                        </div>
-                        <div class="period-item">
-                            <div class="period-label">Statut:</div>
-                            <div style="color: var(--success); font-weight: 600;">${bulletin.statut}</div>
-                        </div>
-                    </div>
+                    // Style du total général
+                    const lastRow = range.e.r;
+                    for (let C = range.s.c; C <= range.e.c; ++C) {
+                        const cell_address = { c: C, r: lastRow };
+                        const cell_ref = XLSX.utils.encode_cell(cell_address);
+                        if (!ws[cell_ref]) continue;
+                        ws[cell_ref].s = {
+                            fill: { fgColor: { rgb: "FF8C00" } },
+                            font: { bold: true, color: { rgb: "FFFFFF" } },
+                            border: {
+                                top: { style: "medium", color: { rgb: "000000" } },
+                                bottom: { style: "medium", color: { rgb: "000000" } }
+                            }
+                        };
+                    }
 
-                    <!-- Tableau principal -->
-                    <div class="table-container-bulletin">
-                        <table class="main-table">
-                            <thead>
-                                <tr>
-                                    <th class="designation">DÉSIGNATION</th>
-                                    <th class="number">NOMBRE</th>
-                                    <th class="base">BASE</th>
-                                    <th class="rate">TAUX %</th>
-                                    <th class="gains">GAINS</th>
-                                    <th class="deductions">RETENUES</th>
-                                    <th class="net">NET</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Salaire de base -->
-                                <tr class="activity-row">
-                                    <td class="designation">Salaire de base</td>
-                                    <td class="number">1</td>
-                                    <td class="base">${formatFCFA(bulletin.salaire_base)}</td>
-                                    <td class="rate">100%</td>
-                                    <td class="gains">${formatFCFA(bulletin.salaire_base)}</td>
-                                    <td class="deductions">-</td>
-                                    <td class="net">${formatFCFA(bulletin.salaire_base)}</td>
-                                </tr>
-                                
-                                <!-- Heures supplémentaires -->
-                                ${bulletin.heures_supplementaires > 0 ? `
-                                <tr>
-                                    <td class="designation">Heures supplémentaires</td>
-                                    <td class="number">${bulletin.heures_supplementaires}</td>
-                                    <td class="base">${formatFCFA(bulletin.taux_horaire)}</td>
-                                    <td class="rate">125%</td>
-                                    <td class="gains">${formatFCFA(bulletin.montant_heures_supp)}</td>
-                                    <td class="deductions">-</td>
-                                    <td class="net">${formatFCFA(bulletin.montant_heures_supp)}</td>
-                                </tr>
-                                ` : ''}
-                                
-                                <!-- Primes -->
-                                ${bulletin.prime_anciennete > 0 ? `
-                                <tr>
-                                    <td class="designation">Prime d'ancienneté</td>
-                                    <td class="number">-</td>
-                                    <td class="base">-</td>
-                                    <td class="rate">-</td>
-                                    <td class="gains">${formatFCFA(bulletin.prime_anciennete)}</td>
-                                    <td class="deductions">-</td>
-                                    <td class="net">${formatFCFA(bulletin.prime_anciennete)}</td>
-                                </tr>
-                                ` : ''}
-                                
-                                ${bulletin.prime_rendement > 0 ? `
-                                <tr>
-                                    <td class="designation">Prime de rendement</td>
-                                    <td class="number">-</td>
-                                    <td class="base">-</td>
-                                    <td class="rate">-</td>
-                                    <td class="gains">${formatFCFA(bulletin.prime_rendement)}</td>
-                                    <td class="deductions">-</td>
-                                    <td class="net">${formatFCFA(bulletin.prime_rendement)}</td>
-                                </tr>
-                                ` : ''}
-                                
-                                <!-- Sous-total gains -->
-                                <tr class="subtotal">
-                                    <td class="designation">TOTAL DES GAINS</td>
-                                    <td class="number"></td>
-                                    <td class="base"></td>
-                                    <td class="rate"></td>
-                                    <td class="gains">${formatFCFA(bulletin.salaire_brut)}</td>
-                                    <td class="deductions"></td>
-                                    <td class="net">${formatFCFA(bulletin.salaire_brut)}</td>
-                                </tr>
-                                
-                                <!-- Cotisations sociales -->
-                                <tr>
-                                    <td class="designation">CNPS (Retraite)</td>
-                                    <td class="number">-</td>
-                                    <td class="base">${formatFCFA(bulletin.base_cnps)}</td>
-                                    <td class="rate">${bulletin.taux_cnps}%</td>
-                                    <td class="gains">-</td>
-                                    <td class="deductions">${formatFCFA(bulletin.montant_cnps)}</td>
-                                    <td class="net">-${formatFCFA(bulletin.montant_cnps)}</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td class="designation">Assurance maladie</td>
-                                    <td class="number">-</td>
-                                    <td class="base">${formatFCFA(bulletin.base_assurance)}</td>
-                                    <td class="rate">${bulletin.taux_assurance}%</td>
-                                    <td class="gains">-</td>
-                                    <td class="deductions">${formatFCFA(bulletin.montant_assurance)}</td>
-                                    <td class="net">-${formatFCFA(bulletin.montant_assurance)}</td>
-                                </tr>
-                                
-                                <!-- IRPP -->
-                                ${bulletin.montant_irpp > 0 ? `
-                                <tr>
-                                    <td class="designation">IRPP (Impôt sur le revenu)</td>
-                                    <td class="number">-</td>
-                                    <td class="base">${formatFCFA(bulletin.base_irpp)}</td>
-                                    <td class="rate">${bulletin.taux_irpp}%</td>
-                                    <td class="gains">-</td>
-                                    <td class="deductions">${formatFCFA(bulletin.montant_irpp)}</td>
-                                    <td class="net">-${formatFCFA(bulletin.montant_irpp)}</td>
-                                </tr>
-                                ` : ''}
-                                
-                                <!-- Sous-total retenues -->
-                                <tr class="subtotal">
-                                    <td class="designation">TOTAL DES RETENUES</td>
-                                    <td class="number"></td>
-                                    <td class="base"></td>
-                                    <td class="rate"></td>
-                                    <td class="gains"></td>
-                                    <td class="deductions">${formatFCFA(bulletin.total_retenues)}</td>
-                                    <td class="net">-${formatFCFA(bulletin.total_retenues)}</td>
-                                </tr>
-                                
-                                <!-- Net à payer -->
-                                <tr class="total">
-                                    <td class="designation">NET À PAYER</td>
-                                    <td class="number"></td>
-                                    <td class="base"></td>
-                                    <td class="rate"></td>
-                                    <td class="gains"></td>
-                                    <td class="deductions"></td>
-                                    <td class="net">${formatFCFA(bulletin.net_a_payer)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    // Ajuster la largeur des colonnes automatiquement
+                    ws['!cols'] = [
+                        { wch: 25 }, // Employé
+                        { wch: 15 }, // Activité
+                        { wch: 12 }, // Bloc
+                        { wch: 20 }, // Sous-quantités
+                        { wch: 15 }, // Quantité
+                        { wch: 15 }, // Prix Unitaire
+                        { wch: 15 }  // Prix Total
+                    ];
+                }
 
-                    <!-- Récapitulatif -->
-                    <div class="summary-section">
-                        <div class="summary-left">
-                            <div class="summary-title">RÉCAPITULATIF COTISATIONS PATRONALES</div>
-                            <table class="summary-table">
-                                <tr>
-                                    <td class="label">CNPS Patronale</td>
-                                    <td class="value">${formatFCFA(bulletin.cnps_patronale)}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label">Assurance Patronale</td>
-                                    <td class="value">${formatFCFA(bulletin.assurance_patronale)}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label">Taxe de formation</td>
-                                    <td class="value">${formatFCFA(bulletin.taxe_formation)}</td>
-                                </tr>
-                                <tr class="total-row">
-                                    <td class="label">Total charges patronales</td>
-                                    <td class="value">${formatFCFA(bulletin.total_charges_patronales)}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <div class="summary-right">
-                            <div class="summary-title">COÛT TOTAL EMPLOYEUR</div>
-                            <table class="summary-table">
-                                <tr>
-                                    <td class="label">Salaire brut</td>
-                                    <td class="value">${formatFCFA(bulletin.salaire_brut)}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label">Charges patronales</td>
-                                    <td class="value">${formatFCFA(bulletin.total_charges_patronales)}</td>
-                                </tr>
-                                <tr class="total-row">
-                                    <td class="label">Coût total employeur</td>
-                                    <td class="value">${formatFCFA(bulletin.cout_total_employeur)}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                // Générer et télécharger le fichier
+                const fileName = `Pointages_${today.replace(/\//g, '-')}_${user.prenom}_${user.nom}.xlsx`;
+                XLSX.writeFile(wb, fileName);
+                
+                showAlert('Fichier Excel généré avec succès', 'success');
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'export Excel:', error);
+                showAlert('Erreur lors de la génération du fichier Excel: ' + error.message, 'error');
+            }
+        }
 
-                    <!-- Pied de page -->
-                    <div class="bulletin-footer">
-                        <div class="legal-mentions">
-                            Le présent bulletin est établi en double exemplaire, l'un remis à l'intéressé, l'autre conservé par l'employeur.<br>
-                            En cas de différence, les écritures comptables de l'employeur feront seules foi.
-                        </div>
-                        
-                        <div class="signature-section">
-                            <div class="signature-stamp">
-                                Cachet et<br>Signature
-                            </div>
-                            <div class="signature-line">
-                                Le Responsable des Ressources Humaines
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+        // 🖼️ EXPORT PNG - Capture d'écran du tableau
+        async function exportPointagesPNG() {
+            try {
+                showAlert('Génération de l\'image en cours...', 'info');
+                
+                const pointages = await getTodayPointages();
+                if (pointages.length === 0) {
+                    showAlert('Aucun pointage trouvé pour aujourd\'hui', 'warning');
+                    return;
+                }
+
+                // Créer un élément temporaire pour le rendu haute qualité
+                const tempDiv = document.createElement('div');
+                tempDiv.style.cssText = `
+                    position: fixed;
+                    left: -10000px;
+                    top: -10000px;
+                    width: 900px;
+                    background: white;
+                    padding: 25px;
+                    border: 3px solid #2c7be5;
+                    border-radius: 12px;
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                `;
+
+                const tableHTML = generateTodayPointagesTable(pointages);
+                tempDiv.innerHTML = tableHTML;
+                document.body.appendChild(tempDiv);
+
+                // Convertir en image haute résolution
+                const canvas = await html2canvas(tempDiv, {
+                    scale: 3, // Haute résolution
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    quality: 1
+                });
+
+                // Nettoyer
+                document.body.removeChild(tempDiv);
+
+                // Convertir en blob et télécharger
+                canvas.toBlob(function(blob) {
+                    const link = document.createElement('a');
+                    const user = getCurrentUser();
+                    const today = new Date().toLocaleDateString('fr-FR').replace(/\//g, '-');
+                    
+                    link.download = `Pointages_${today}_${user.prenom}_${user.nom}.png`;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }, 'image/png', 1.0);
+
+                showAlert('Image PNG générée avec succès', 'success');
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'export PNG:', error);
+                showAlert('Erreur lors de la génération de l\'image: ' + error.message, 'error');
+            }
+        }
+
+        // 💬 WHATSAPP - Envoi direct avec message formaté
+        async function sendPointagesViaWhatsApp() {
+            try {
+                const phoneNumber = document.getElementById('whatsappNumber').value.trim();
+                
+                if (!phoneNumber) {
+                    showAlert('Veuillez entrer un numéro WhatsApp', 'error');
+                    return;
+                }
+
+                // Validation du format international
+                const phoneRegex = /^\+[0-9]{10,15}$/;
+                if (!phoneRegex.test(phoneNumber)) {
+                    showAlert('Format de numéro invalide. Utilisez le format international: +22501234567', 'error');
+                    return;
+                }
+
+                showAlert('Préparation de l\'envoi WhatsApp...', 'info');
+
+                const pointages = await getTodayPointages();
+                if (pointages.length === 0) {
+                    showAlert('Aucun pointage trouvé pour aujourd\'hui', 'warning');
+                    return;
+                }
+
+                const user = getCurrentUser();
+                const today = new Date().toLocaleDateString('fr-FR');
+                
+                // Créer le message WhatsApp formaté professionnellement
+                let message = `*🌴 MKJ SERVICE - POINTAGES DU JOUR*\\n\\n`;
+                
+                // En-tête informatif
+                message += `*📅 Date :* ${today}\\n`;
+                message += `*👨‍💼 Chef :* ${user.prenom} ${user.nom}\\n`;
+                message += `*🔧 Activité :* ${getActivityName(user.activity)}\\n`;
+                message += `*📊 Total pointages :* ${pointages.length}\\n\\n`;
+                
+                message += `*📋 DÉTAIL DES POINTAGES :*\\n\\n`;
+
+                let totalGeneral = 0;
+                let index = 1;
+                
+                // Détail de chaque pointage
+                pointages.forEach(pointage => {
+                    const sousQuantites = pointage.sub_quantities && pointage.sub_quantities.length > 0 
+                        ? pointage.sub_quantities.join(' + ') 
+                        : '-';
+                    
+                    const prixTotal = pointage.total_price || 0;
+                    totalGeneral += prixTotal;
+
+                    message += `*${index}. ${pointage.employee_name}*\\n`;
+                    message += `   🎯 Activité : ${getActivityName(pointage.activity)}\\n`;
+                    message += `   📍 Bloc : ${pointage.bloc || '-'}\\n`;
+                    message += `   📦 Sous-quantités : ${sousQuantites}\\n`;
+                    message += `   ⚖️ Quantité : ${pointage.qty_total || 0}\\n`;
+                    message += `   💰 Prix unitaire : ${formatFCFA(pointage.unit_price || 0)}\\n`;
+                    message += `   🏷️ Prix total : ${formatFCFA(prixTotal)}\\n\\n`;
+                    
+                    index++;
+                });
+
+                // Résumé général
+                message += `*💰 RÉSUMÉ GÉNÉRAL*\\n`;
+                message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n`;
+                message += `*Nombre d'employés :* ${pointages.length}\\n`;
+                message += `*Total général :* ${formatFCFA(totalGeneral)}\\n\\n`;
+                
+                message += `_📱 Généré automatiquement par MKJ SERVICE_\\n`;
+                message += `_🕐 ${new Date().toLocaleString('fr-FR')}_`;
+
+                // Encoder le message pour URL (échapper les caractères spéciaux)
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${encodedMessage}`;
+
+                // Ouvrir WhatsApp dans un nouvel onglet
+                window.open(whatsappUrl, '_blank');
+                
+                showAlert('WhatsApp ouvert avec le message pré-rempli', 'success');
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi WhatsApp:', error);
+                showAlert('Erreur lors de l\'envoi WhatsApp: ' + error.message, 'error');
+            }
         }
 
         // =============================================
@@ -4917,6 +4941,7 @@
 
         // Formater les montants en FCFA
         function formatFCFA(montant) {
+            if (typeof montant !== 'number') montant = parseFloat(montant) || 0;
             return new Intl.NumberFormat('fr-FR', {
                 style: 'currency',
                 currency: 'XOF',
@@ -6080,6 +6105,689 @@
                 console.error('Erreur lors de l\'archivage des pointages:', error);
                 showAlert('Erreur lors de l\'archivage des pointages: ' + error.message, 'error');
             }
+        }
+
+        // =============================================
+        // FONCTIONS POUR LES BULLETINS EMPLOYÉ
+        // =============================================
+
+        async function loadEmployeeBulletins() {
+            const user = getCurrentUser();
+            if (!user || user.role !== 'EMPLOYE') return;
+
+            try {
+                const bulletins = await getBulletinsByEmployee(user.id);
+                const container = document.getElementById('employeeBulletinsContainer');
+                
+                if (bulletins.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💰</div>
+                            <h3>Aucun bulletin de paie disponible</h3>
+                            <p>Vos bulletins de paie apparaîtront ici une fois générés par l'administrateur</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = bulletins.map(bulletin => {
+                    const dateGen = new Date(bulletin.date_generation);
+                    const moisAnnee = dateGen.toLocaleDateString('fr-FR', { 
+                        month: 'long', 
+                        year: 'numeric' 
+                    });
+                    
+                    return `
+                        <div class="archive-folder" onclick="viewEmployeeBulletin(${bulletin.id})">
+                            <div class="folder-header">
+                                <div class="folder-title">Bulletin ${moisAnnee}</div>
+                                <div class="folder-count">${formatFCFA(bulletin.net_a_payer)}</div>
+                            </div>
+                            <div class="folder-details">
+                                <div><strong>Période:</strong> ${bulletin.periode}</div>
+                                <div><strong>Salaire brut:</strong> ${formatFCFA(bulletin.salaire_brut)}</div>
+                                <div><strong>Net à payer:</strong> ${formatFCFA(bulletin.net_a_payer)}</div>
+                                <div><strong>Statut:</strong> ${bulletin.statut}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Erreur lors du chargement des bulletins employé:', error);
+                showAlert('Erreur lors du chargement des bulletins: ' + error.message, 'error');
+            }
+        }
+
+        async function viewEmployeeBulletin(bulletinId) {
+            try {
+                const bulletins = await getBulletinsByEmployee(getCurrentUser().id);
+                const bulletin = bulletins.find(b => b.id === bulletinId);
+                
+                if (!bulletin) {
+                    showAlert('Bulletin non trouvé', 'error');
+                    return;
+                }
+
+                document.getElementById('bulletinContent').innerHTML = genererBulletinHTML(bulletin);
+                showSection('bulletinDetail');
+            } catch (error) {
+                console.error('Erreur lors de l\'affichage du bulletin:', error);
+                showAlert('Erreur lors de l\'affichage du bulletin: ' + error.message, 'error');
+            }
+        }
+
+        // =============================================
+        // FONCTIONS POUR LA MODIFICATION DES UTILISATEURS
+        // =============================================
+
+        async function editUser(userId) {
+            try {
+                const users = await getUsers();
+                const user = users.find(u => u.id === userId);
+                
+                if (!user) {
+                    showAlert('Utilisateur non trouvé', 'error');
+                    return;
+                }
+
+                // Remplir le formulaire de modification
+                document.getElementById('editUserId').value = user.id;
+                document.getElementById('editUserRole').value = user.role;
+                document.getElementById('editUsername').value = user.username;
+                document.getElementById('editNom').value = user.nom;
+                document.getElementById('editPrenom').value = user.prenom;
+                document.getElementById('editDepartement').value = user.departement;
+                document.getElementById('editTelephone').value = user.telephone || '';
+                document.getElementById('editEmail').value = user.email || '';
+                document.getElementById('editColor').value = user.color;
+
+                // Gérer l'affichage de la photo
+                const photoPreview = document.getElementById('editPhotoPreview');
+                if (user.photo) {
+                    photoPreview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = user.photo;
+                    img.className = 'photo-preview';
+                    photoPreview.appendChild(img);
+                } else {
+                    photoPreview.innerHTML = '👤';
+                    photoPreview.className = 'photo-placeholder';
+                }
+
+                // Gérer les champs d'activité
+                toggleEditActivityField();
+                if (user.role === 'CHEF') {
+                    document.getElementById('editActivity').value = user.activity || 'recolte';
+                } else if (user.role === 'EMPLOYE') {
+                    document.getElementById('editEmployeeActivity').value = user.activity || 'recolte';
+                }
+
+                showSection('adminEditUser');
+            } catch (error) {
+                console.error('Erreur lors du chargement des données utilisateur:', error);
+                showAlert('Erreur lors du chargement des données: ' + error.message, 'error');
+            }
+        }
+
+        function toggleEditActivityField() {
+            const role = document.getElementById('editUserRole').value;
+            const activityField = document.getElementById('editActivityField');
+            const employeeActivityField = document.getElementById('editEmployeeActivityField');
+            
+            if (role === 'CHEF') {
+                activityField.style.display = 'block';
+                employeeActivityField.style.display = 'none';
+                document.getElementById('editActivity').required = true;
+                document.getElementById('editEmployeeActivity').required = false;
+            } else if (role === 'EMPLOYE') {
+                activityField.style.display = 'none';
+                employeeActivityField.style.display = 'block';
+                document.getElementById('editActivity').required = false;
+                document.getElementById('editEmployeeActivity').required = true;
+            } else {
+                activityField.style.display = 'none';
+                employeeActivityField.style.display = 'none';
+                document.getElementById('editActivity').required = false;
+                document.getElementById('editEmployeeActivity').required = false;
+            }
+        }
+
+        function previewEditPhoto(event) {
+            const input = event.target;
+            const preview = document.getElementById('editPhotoPreview');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'photo-preview';
+                    preview.appendChild(img);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function handleEditUser(event) {
+            event.preventDefault();
+            
+            try {
+                const userId = document.getElementById('editUserId').value;
+                const photoData = await getEditPhotoData();
+                const role = document.getElementById('editUserRole').value;
+                
+                const updatedUser = {
+                    username: document.getElementById('editUsername').value,
+                    role: role,
+                    color: document.getElementById('editColor').value,
+                    nom: document.getElementById('editNom').value,
+                    prenom: document.getElementById('editPrenom').value,
+                    departement: document.getElementById('editDepartement').value,
+                    telephone: document.getElementById('editTelephone').value,
+                    email: document.getElementById('editEmail').value,
+                    activity: role === 'CHEF' ? document.getElementById('editActivity').value : 
+                             role === 'EMPLOYE' ? document.getElementById('editEmployeeActivity').value : null
+                };
+
+                // Ne mettre à jour le mot de passe que s'il est renseigné
+                const password = document.getElementById('editPassword').value;
+                if (password) {
+                    updatedUser.password = password;
+                }
+
+                // Ne mettre à jour la photo que si une nouvelle est sélectionnée
+                if (photoData) {
+                    updatedUser.photo = photoData;
+                }
+
+                const users = await getUsers();
+                const existingUser = users.find(u => u.username === updatedUser.username && u.id !== parseInt(userId));
+                
+                if (existingUser) {
+                    showAlert('Cet identifiant est déjà utilisé par un autre utilisateur', 'error');
+                    return;
+                }
+
+                const result = await updateUser(userId, updatedUser);
+                
+                if (result) {
+                    showAlert('Utilisateur modifié avec succès', 'success');
+                    showSection('adminUsers');
+                    loadUsersTable();
+                }
+            } catch (error) {
+                console.error('Erreur lors de la modification de l\'utilisateur:', error);
+                showAlert('Erreur lors de la modification de l\'utilisateur: ' + error.message, 'error');
+            }
+        }
+
+        function getEditPhotoData() {
+            const input = document.getElementById('editPhotoInput');
+            if (input.files && input.files[0]) {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        resolve(e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                });
+            }
+            return Promise.resolve(null);
+        }
+
+        // =============================================
+        // FONCTIONS POUR LA GESTION DES POINTAGES PAR SEMAINE
+        // =============================================
+
+        // Fonction pour grouper les pointages par semaine
+        function groupPointagesByWeek(pointages) {
+            const weeks = {};
+            
+            pointages.forEach(pointage => {
+                const date = new Date(pointage.date);
+                const weekNumber = getWeekNumber(date);
+                const year = date.getFullYear();
+                const weekKey = `${year}-${weekNumber}`;
+                
+                if (!weeks[weekKey]) {
+                    const weekStart = getStartOfWeek(date);
+                    const weekEnd = getEndOfWeek(date);
+                    
+                    weeks[weekKey] = {
+                        weekNumber: weekNumber,
+                        year: year,
+                        startDate: weekStart,
+                        endDate: weekEnd,
+                        pointages: [],
+                        totalPointages: 0,
+                        totalQuantite: 0,
+                        totalPrix: 0,
+                        employes: new Set()
+                    };
+                }
+                
+                weeks[weekKey].pointages.push(pointage);
+                weeks[weekKey].totalPointages++;
+                weeks[weekKey].totalQuantite += pointage.qty_total || 0;
+                weeks[weekKey].totalPrix += pointage.total_price || 0;
+                weeks[weekKey].employes.add(pointage.employee_id);
+            });
+            
+            return weeks;
+        }
+
+        // Obtenir le numéro de semaine ISO
+        function getWeekNumber(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        }
+
+        // Obtenir le début de la semaine (lundi)
+        function getStartOfWeek(date) {
+            const d = new Date(date);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            return new Date(d.setDate(diff));
+        }
+
+        // Obtenir la fin de la semaine (dimanche)
+        function getEndOfWeek(date) {
+            const start = getStartOfWeek(date);
+            const end = new Date(start);
+            end.setDate(start.getDate() + 6);
+            return end;
+        }
+
+        // Formater une date en français
+        function formatDateFr(date) {
+            return date.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Générer l'affichage des pointages par semaine
+        function generateWeeklyPointagesDisplay(weeks, userRole = 'admin') {
+            let html = '';
+            
+            // Trier les semaines par date (plus récentes en premier)
+            const sortedWeeks = Object.values(weeks).sort((a, b) => 
+                new Date(b.startDate) - new Date(a.startDate)
+            );
+            
+            if (sortedWeeks.length === 0) {
+                return `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>Aucun pointage trouvé</h3>
+                        <p>Les pointages apparaîtront ici une fois créés</p>
+                    </div>
+                `;
+            }
+            
+            sortedWeeks.forEach(week => {
+                const weekStartFormatted = formatDateFr(week.startDate);
+                const weekEndFormatted = formatDateFr(week.endDate);
+                const uniqueEmployes = week.employes.size;
+                
+                html += `
+                    <div class="week-container">
+                        <div class="week-header" onclick="toggleWeekContent('${week.year}-${week.weekNumber}')">
+                            <div>
+                                <div class="week-title">Semaine ${week.weekNumber} - ${week.year}</div>
+                                <div class="week-dates">${weekStartFormatted} au ${weekEndFormatted}</div>
+                            </div>
+                            <div class="week-stats">
+                                <div class="week-stat">${week.totalPointages} pointages</div>
+                                <div class="week-stat">${uniqueEmployes} employés</div>
+                                <div class="week-stat">${week.totalQuantite.toFixed(2)} quantité</div>
+                                <div class="week-stat">${formatFCFA(week.totalPrix)}</div>
+                            </div>
+                        </div>
+                        <div class="week-content" id="week-${week.year}-${week.weekNumber}">
+                            <div class="table-container">
+                                <table class="week-table">
+                                    <thead>
+                                        <tr>
+                                            ${userRole === 'admin' ? '<th>ID</th>' : ''}
+                                            <th>Date</th>
+                                            <th>Employé</th>
+                                            <th>Présence</th>
+                                            <th>Activité</th>
+                                            <th>Bloc</th>
+                                            <th>Sous-quantités</th>
+                                            <th>Quantité totale</th>
+                                            <th>Prix unitaire</th>
+                                            <th>Prix total</th>
+                                            ${userRole === 'admin' ? '<th>Chef</th>' : ''}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${week.pointages.map(pointage => {
+                                            const subQuantities = pointage.sub_quantities || [];
+                                            const sousQuantitesFormatees = subQuantities.length > 0 ? subQuantities.join('+') : '-';
+                                            const isPresent = pointage.presence === 'Présent';
+                                            
+                                            return `
+                                                <tr>
+                                                    ${userRole === 'admin' ? `<td>${pointage.id}</td>` : ''}
+                                                    <td>${pointage.date}</td>
+                                                    <td>${pointage.employee_name || 'N/A'}</td>
+                                                    <td>
+                                                        <span style="color: ${isPresent ? 'var(--success)' : 'var(--danger)'}; font-weight: 500;">
+                                                            ${pointage.presence}
+                                                        </span>
+                                                    </td>
+                                                    <td>${getActivityName(pointage.activity)}</td>
+                                                    <td>${pointage.bloc || '-'}</td>
+                                                    <td>${sousQuantitesFormatees}</td>
+                                                    <td>${pointage.qty_total || 0}</td>
+                                                    <td>${formatFCFA(pointage.unit_price || 0)}</td>
+                                                    <td style="font-weight: 500;">${formatFCFA(pointage.total_price || 0)}</td>
+                                                    ${userRole === 'admin' ? `<td>${pointage.chef_name || 'N/A'}</td>` : ''}
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                        <tr class="week-total">
+                                            ${userRole === 'admin' ? '<td colspan="6"></td>' : '<td colspan="5"></td>'}
+                                            <td><strong>Total semaine:</strong></td>
+                                            <td><strong>${week.totalQuantite.toFixed(2)}</strong></td>
+                                            <td></td>
+                                            <td><strong>${formatFCFA(week.totalPrix)}</strong></td>
+                                            ${userRole === 'admin' ? '<td></td>' : ''}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            return html;
+        }
+
+        // Basculer l'affichage du contenu d'une semaine
+        function toggleWeekContent(weekId) {
+            const content = document.getElementById(`week-${weekId}`);
+            content.classList.toggle('expanded');
+        }
+
+        // =============================================
+        // FONCTIONS POUR LA GESTION DE LA PAIE (CORRIGÉES)
+        // =============================================
+
+        // Générer un bulletin de paie professionnel
+        function genererBulletinHTML(bulletin) {
+            const user = getCurrentUser();
+            const isAdmin = user.role === 'ADMINISTRATEUR';
+            
+            return `
+                <div class="bulletin-content">
+                    <!-- En-tête -->
+                    <div class="bulletin-header">
+                        <div class="company-info">
+                            <div class="company-logo">
+                                <div class="logo-icon">🌴</div>
+                                <div class="company-name">MKJ SERVICE</div>
+                            </div>
+                            <div class="company-details">
+                                Plantation de palmiers à huile<br>
+                                BP 1234, Abidjan, Côte d'Ivoire<br>
+                                Tél: +225 01 23 45 67 89<br>
+                                Email: contact@mkj-service.ci
+                            </div>
+                        </div>
+                        
+                        <div class="document-title">
+                            <div class="title-main">BULLETIN DE PAIE</div>
+                            <div class="title-sub">Période: ${bulletin.periode}</div>
+                        </div>
+                        
+                        <div class="employee-header-section">
+                            <div class="employee-photo">
+                                ${bulletin.employee_photo ? 
+                                    `<img src="${bulletin.employee_photo}" style="width:100%;height:100%;object-fit:cover;">` : 
+                                    `<div class="photo-placeholder">PHOTO</div>`
+                                }
+                            </div>
+                            <div class="employee-details-compact">
+                                <div class="info-row">
+                                    <div class="info-label">Matricule:</div>
+                                    <div class="info-value">${bulletin.employee_id}</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Nom:</div>
+                                    <div class="info-value">${bulletin.employee_nom}</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Prénom:</div>
+                                    <div class="info-value">${bulletin.employee_prenom}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informations de période -->
+                    <div class="period-info">
+                        <div class="period-dates">
+                            <div class="period-item">
+                                <div class="period-label">Période:</div>
+                                <div>${bulletin.periode}</div>
+                            </div>
+                            <div class="period-item">
+                                <div class="period-label">Date de paie:</div>
+                                <div>${new Date(bulletin.date_generation).toLocaleDateString('fr-FR')}</div>
+                            </div>
+                        </div>
+                        <div class="period-item">
+                            <div class="period-label">Statut:</div>
+                            <div style="color: var(--success); font-weight: 600;">${bulletin.statut}</div>
+                        </div>
+                    </div>
+
+                    <!-- Tableau principal -->
+                    <div class="table-container-bulletin">
+                        <table class="main-table">
+                            <thead>
+                                <tr>
+                                    <th class="designation">DÉSIGNATION</th>
+                                    <th class="number">NOMBRE</th>
+                                    <th class="base">BASE</th>
+                                    <th class="rate">TAUX %</th>
+                                    <th class="gains">GAINS</th>
+                                    <th class="deductions">RETENUES</th>
+                                    <th class="net">NET</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Salaire de base -->
+                                <tr class="activity-row">
+                                    <td class="designation">Salaire de base</td>
+                                    <td class="number">1</td>
+                                    <td class="base">${formatFCFA(bulletin.salaire_base)}</td>
+                                    <td class="rate">100%</td>
+                                    <td class="gains">${formatFCFA(bulletin.salaire_base)}</td>
+                                    <td class="deductions">-</td>
+                                    <td class="net">${formatFCFA(bulletin.salaire_base)}</td>
+                                </tr>
+                                
+                                <!-- Heures supplémentaires -->
+                                ${bulletin.heures_supplementaires > 0 ? `
+                                <tr>
+                                    <td class="designation">Heures supplémentaires</td>
+                                    <td class="number">${bulletin.heures_supplementaires}</td>
+                                    <td class="base">${formatFCFA(bulletin.taux_horaire)}</td>
+                                    <td class="rate">125%</td>
+                                    <td class="gains">${formatFCFA(bulletin.montant_heures_supp)}</td>
+                                    <td class="deductions">-</td>
+                                    <td class="net">${formatFCFA(bulletin.montant_heures_supp)}</td>
+                                </tr>
+                                ` : ''}
+                                
+                                <!-- Primes -->
+                                ${bulletin.prime_anciennete > 0 ? `
+                                <tr>
+                                    <td class="designation">Prime d'ancienneté</td>
+                                    <td class="number">-</td>
+                                    <td class="base">-</td>
+                                    <td class="rate">-</td>
+                                    <td class="gains">${formatFCFA(bulletin.prime_anciennete)}</td>
+                                    <td class="deductions">-</td>
+                                    <td class="net">${formatFCFA(bulletin.prime_anciennete)}</td>
+                                </tr>
+                                ` : ''}
+                                
+                                ${bulletin.prime_rendement > 0 ? `
+                                <tr>
+                                    <td class="designation">Prime de rendement</td>
+                                    <td class="number">-</td>
+                                    <td class="base">-</td>
+                                    <td class="rate">-</td>
+                                    <td class="gains">${formatFCFA(bulletin.prime_rendement)}</td>
+                                    <td class="deductions">-</td>
+                                    <td class="net">${formatFCFA(bulletin.prime_rendement)}</td>
+                                </tr>
+                                ` : ''}
+                                
+                                <!-- Sous-total gains -->
+                                <tr class="subtotal">
+                                    <td class="designation">TOTAL DES GAINS</td>
+                                    <td class="number"></td>
+                                    <td class="base"></td>
+                                    <td class="rate"></td>
+                                    <td class="gains">${formatFCFA(bulletin.salaire_brut)}</td>
+                                    <td class="deductions"></td>
+                                    <td class="net">${formatFCFA(bulletin.salaire_brut)}</td>
+                                </tr>
+                                
+                                <!-- Cotisations sociales -->
+                                <tr>
+                                    <td class="designation">CNPS (Retraite)</td>
+                                    <td class="number">-</td>
+                                    <td class="base">${formatFCFA(bulletin.base_cnps)}</td>
+                                    <td class="rate">${bulletin.taux_cnps}%</td>
+                                    <td class="gains">-</td>
+                                    <td class="deductions">${formatFCFA(bulletin.montant_cnps)}</td>
+                                    <td class="net">-${formatFCFA(bulletin.montant_cnps)}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="designation">Assurance maladie</td>
+                                    <td class="number">-</td>
+                                    <td class="base">${formatFCFA(bulletin.base_assurance)}</td>
+                                    <td class="rate">${bulletin.taux_assurance}%</td>
+                                    <td class="gains">-</td>
+                                    <td class="deductions">${formatFCFA(bulletin.montant_assurance)}</td>
+                                    <td class="net">-${formatFCFA(bulletin.montant_assurance)}</td>
+                                </tr>
+                                
+                                <!-- IRPP -->
+                                ${bulletin.montant_irpp > 0 ? `
+                                <tr>
+                                    <td class="designation">IRPP (Impôt sur le revenu)</td>
+                                    <td class="number">-</td>
+                                    <td class="base">${formatFCFA(bulletin.base_irpp)}</td>
+                                    <td class="rate">${bulletin.taux_irpp}%</td>
+                                    <td class="gains">-</td>
+                                    <td class="deductions">${formatFCFA(bulletin.montant_irpp)}</td>
+                                    <td class="net">-${formatFCFA(bulletin.montant_irpp)}</td>
+                                </tr>
+                                ` : ''}
+                                
+                                <!-- Sous-total retenues -->
+                                <tr class="subtotal">
+                                    <td class="designation">TOTAL DES RETENUES</td>
+                                    <td class="number"></td>
+                                    <td class="base"></td>
+                                    <td class="rate"></td>
+                                    <td class="gains"></td>
+                                    <td class="deductions">${formatFCFA(bulletin.total_retenues)}</td>
+                                    <td class="net">-${formatFCFA(bulletin.total_retenues)}</td>
+                                </tr>
+                                
+                                <!-- Net à payer -->
+                                <tr class="total">
+                                    <td class="designation">NET À PAYER</td>
+                                    <td class="number"></td>
+                                    <td class="base"></td>
+                                    <td class="rate"></td>
+                                    <td class="gains"></td>
+                                    <td class="deductions"></td>
+                                    <td class="net">${formatFCFA(bulletin.net_a_payer)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Récapitulatif -->
+                    <div class="summary-section">
+                        <div class="summary-left">
+                            <div class="summary-title">RÉCAPITULATIF COTISATIONS PATRONALES</div>
+                            <table class="summary-table">
+                                <tr>
+                                    <td class="label">CNPS Patronale</td>
+                                    <td class="value">${formatFCFA(bulletin.cnps_patronale)}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Assurance Patronale</td>
+                                    <td class="value">${formatFCFA(bulletin.assurance_patronale)}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Taxe de formation</td>
+                                    <td class="value">${formatFCFA(bulletin.taxe_formation)}</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td class="label">Total charges patronales</td>
+                                    <td class="value">${formatFCFA(bulletin.total_charges_patronales)}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="summary-right">
+                            <div class="summary-title">COÛT TOTAL EMPLOYEUR</div>
+                            <table class="summary-table">
+                                <tr>
+                                    <td class="label">Salaire brut</td>
+                                    <td class="value">${formatFCFA(bulletin.salaire_brut)}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Charges patronales</td>
+                                    <td class="value">${formatFCFA(bulletin.total_charges_patronales)}</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td class="label">Coût total employeur</td>
+                                    <td class="value">${formatFCFA(bulletin.cout_total_employeur)}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Pied de page -->
+                    <div class="bulletin-footer">
+                        <div class="legal-mentions">
+                            Le présent bulletin est établi en double exemplaire, l'un remis à l'intéressé, l'autre conservé par l'employeur.<br>
+                            En cas de différence, les écritures comptables de l'employeur feront seules foi.
+                        </div>
+                        
+                        <div class="signature-section">
+                            <div class="signature-stamp">
+                                Cachet et<br>Signature
+                            </div>
+                            <div class="signature-line">
+                                Le Responsable des Ressources Humaines
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         // =============================================
